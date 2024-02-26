@@ -1,0 +1,4 @@
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.AssemblyInfoInputs.cache
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.AssemblyInfo.cs
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.csproj.CoreCompileInputs.cache
