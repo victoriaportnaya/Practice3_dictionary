@@ -107,3 +107,83 @@ public class LinkedList
         throw new InvalidOperationException("Element with the key is not found!");
     }
 }
+
+public class StringDictionary
+{
+    private const int InitialSize = 25;
+    
+    private LinkedList[] _buckets = new LinkedList[InitialSize];
+    public int count;
+    
+    public void Add(string key, string value)
+    {
+        int hash = CalculateHash(key);
+        if (_buckets[hash] == null)
+        {
+            _buckets[hash] = new LinkedList();
+        }
+
+        foreach (var pair in _buckets[hash])
+        {
+            if (pair.Key == key)
+            {
+                pair.Value = value;
+                return;
+            }
+        }
+
+        _buckets[hash].Add(new KeyValuePair(key, value));
+        count++;
+    }
+
+    public void Remove(string key)
+    {
+        int hash = CalculateHash(key);
+
+        if (_buckets[hash] != null)
+        {
+            var nodeToRemove = _buckets[hash].First;
+            while (nodeToRemove != null)
+            {
+                if (nodeToRemove.Value.Key == key)
+                {
+                    _buckets[hash].Remove(nodeToRemove);
+                    count--;
+                    return;
+                }
+            }
+
+            nodeToRemove = nodeToRemove.Next;
+
+        }
+    }
+
+    public string Get(string key)
+    {
+        int hash = CalculateHash(key);
+
+        if (_buckets[hash] != null)
+        {
+            foreach (var pair in _buckets[hash])
+            {
+                if (pair.Key == key)
+                {
+                    return pair.Value;
+                }
+            }
+        }
+
+        throw new Exception($"{key} does not exist in the dictionary!");
+    }
+
+    public int Count
+    {
+        get { return count; }
+    }
+
+    private int CalculateHash(string key)
+    {
+        var hash = key.Length % 25;
+        return hash;
+    }
+}
