@@ -1,29 +1,44 @@
 ﻿// linked list
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
 class Program
 {
-    static void Main
+    static void Main()
     {
-        var lines = File.ReadLines("C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\dict.txt");
+        var lines = File.ReadLines(@"C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\dict.txt");
         var dict = new StringDictionary();
         foreach (var line in lines)
         {
             var splitted = line.Split('|');
-            var word = splitted[0];
-            var def = splitted[1];
-            dict.Add(word, def);
+
+            if (splitted.Length > 2)
+            {
+                var word = splitted[0];
+                var def = splitted[2];
+                dict.Add(word, def);
+            }
+            else
+            {
+                Console.WriteLine(".");
+            }
         }
 
-        float load_factor = (float)dict.Count / StringDictionary.InitialSize; 
+        float load_factor = (float)dict.Count / dict._buckets.Length; 
         Console.WriteLine($"The load factor is {load_factor}"); 
         Console.WriteLine("Type your word >>");
-        string word = Console.ReadLine();
-        string def = dict.Get(word);
-        ConsoleWriteLine($"Definition of {word} is {def}");
-        
+        string userWord = Console.ReadLine().ToLower();
+        try
+        {
+            string def = dict.Get(userWord);
+            Console.WriteLine($"DEFINITION OF {userWord.ToUpper()}:{def}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }   
 }
 public class KeyValuePair
@@ -44,8 +59,8 @@ public class KeyValuePair
 public class LinkedListNode
 {
     public KeyValuePair Pair { get; }
-
     public LinkedListNode Next { get; set; }
+    public LinkedListNode Previous { get; set; }
 
     public LinkedListNode(KeyValuePair pair, LinkedListNode next = null)
     {
@@ -57,18 +72,27 @@ public class LinkedListNode
 // linked list itself
 public class LinkedList : IEnumerable<KeyValuePair>
 {
-    private LinkedListNode _first;
+    public LinkedListNode? _first;
     public int Count { get; private set; }
+
+    public LinkedListNode? First
+    {
+        get { return _first; }
+        set { _first = value; }
+    }
     
     public void Add(KeyValuePair pair)
     {
         var newNode = new LinkedListNode(pair);
         if (_first != null)
-            newNode.Next = _first;
-        
-        Count++;
-        
+            _first.Previous = newNode;
+
+        newNode.Next = _first;
         _first = newNode;
+
+        Count++;
+
+
     }
 
     public void RemoveByKey(string key)
@@ -119,7 +143,7 @@ public class LinkedList : IEnumerable<KeyValuePair>
 
         while (current != null)
         {
-            yield return current.Pair;
+            yield return new KeyValuePair(current.Pair.Key, current.Pair.Value);
             current = current.Next;
         }
     }
@@ -152,16 +176,17 @@ public class StringDictionary
 {
     public const int InitialSize = 25;
 
-    private LinkedList[] _buckets = new LinkedList[InitialSize];
-    private int count;
+    public LinkedList[] _buckets = new LinkedList[InitialSize];
+    public int count;
     
     public void Add(string key, string value)
     {
-        if ((Count + 1) / _buckets) > 0.7)
+        if ((Count + 1) / _buckets.Length > 0.7f)
         {
             ExtendBuckets();
         }
         int hash = CalculateHash(key);
+        
         if (_buckets[hash] == null)
         {
             _buckets[hash] = new LinkedList();
@@ -186,22 +211,36 @@ public class StringDictionary
 
         if (_buckets[hash] != null)
         {
-            var nodeToRemove = _buckets[hash].First;
-            while (nodeToRemove != null)
+            var previous = (LinkedListNode)null;
+            var current = _buckets[hash].First;
+            
+            while (current != null)
             {
-                if (nodeToRemove.Value.Key == key)
+                if (current.Pair.Key == key)
                 {
-                    _buckets[hash].Remove(nodeToRemove);
+                    if (previous == null)
+                    {
+                        _buckets[hash].First = current.Next;
+                    }
+                    else
+                    {
+                        previous.Next = current.Next;
+                    }
+
                     count--;
                     return;
                 }
-                
-                nodeToRemove = nodeToRemove.Next;
+
+                previous = current;
+                current = current.Next;
+
+
             }
 
             
-
         }
+
+        throw new Exception("Key was not found!");
     }
 
     public string Get(string key)
@@ -227,10 +266,9 @@ public class StringDictionary
         get { return count; }
     }
 
-    private int CalculateHash(string key)
+    public int CalculateHash(string key)
     {
-        var hash = key.Length % 25;
-        return hash;
+        return key.Length % InitialSize;
     }
 
     public void ExtendBuckets()

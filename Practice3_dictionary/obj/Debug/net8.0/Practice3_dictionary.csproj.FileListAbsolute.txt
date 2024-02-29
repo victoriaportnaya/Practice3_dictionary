@@ -3,3 +3,13 @@ C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug
 C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.AssemblyInfo.cs
 C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.csproj.CoreCompileInputs.cache
 C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.sourcelink.json
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\bin\Debug\net8.0\Practice3_dictionary.exe
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\bin\Debug\net8.0\Practice3_dictionary.deps.json
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\bin\Debug\net8.0\Practice3_dictionary.runtimeconfig.json
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\bin\Debug\net8.0\Practice3_dictionary.dll
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\bin\Debug\net8.0\Practice3_dictionary.pdb
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.dll
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\refint\Practice3_dictionary.dll
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.pdb
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\Practice3_dictionary.genruntimeconfig.cache
+C:\Users\victo\RiderProjects\Practice3_dictionary\Practice3_dictionary\obj\Debug\net8.0\ref\Practice3_dictionary.dll

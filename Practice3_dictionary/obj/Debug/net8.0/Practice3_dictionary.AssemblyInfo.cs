@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Practice3_dictionary")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb9a2f7290ee8188fe46a24a0514647e0ab731c1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c00d113355d8c24823171084dcf450f7d3d08d13")]
 [assembly: System.Reflection.AssemblyProductAttribute("Practice3_dictionary")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Practice3_dictionary")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
