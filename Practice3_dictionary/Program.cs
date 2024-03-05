@@ -12,7 +12,7 @@ class Program
         var dict = new StringDictionary();
         foreach (var line in lines)
         {
-            var splitted = line.Split('|');
+            var splitted = line.Split('|'); // split the line 
 
             if (splitted.Length > 2)
             {
@@ -22,12 +22,13 @@ class Program
             }
             else
             {
-                Console.WriteLine(".");
+                Console.WriteLine("."); // handle lines out of the format
             }
         }
 
         float load_factor = (float)dict.Count / dict._buckets.Length; 
         Console.WriteLine($"The load factor is {load_factor}"); 
+        // user input
         Console.WriteLine("Type your word >>");
         string userWord = Console.ReadLine().ToLower();
         try
@@ -39,6 +40,7 @@ class Program
         {
             Console.WriteLine(ex.Message);
         }
+        
     }   
 }
 public class KeyValuePair
@@ -73,9 +75,9 @@ public class LinkedListNode
 public class LinkedList : IEnumerable<KeyValuePair>
 {
     public LinkedListNode? _first;
-    public int Count { get; private set; }
+    public int Count { get; private set; } // counter for load factor 
 
-    public LinkedListNode? First
+    public LinkedListNode? First // create property First for remove method
     {
         get { return _first; }
         set { _first = value; }
@@ -102,7 +104,7 @@ public class LinkedList : IEnumerable<KeyValuePair>
             throw new Exception("The list is empty!");
         }
 
-        if (_first.Pair.Key.Equals(key))
+        if (_first.Pair.Key.Equals(key)) // check whether equal
         {
             _first = _first.Next;
             if (_first != null)
@@ -175,11 +177,13 @@ public class LinkedList : IEnumerable<KeyValuePair>
 public class StringDictionary
 {
     public const int InitialSize = 25;
+    public const int CacheSize = 25; // create cache as dictionary 
 
     public LinkedList[] _buckets = new LinkedList[InitialSize];
+    public Dictionary<string, string> _cache = new Dictionary<string, string>();
     public int count;
     
-    public void Add(string key, string value)
+    public void Add(string key, string value) 
     {
         if ((Count + 1) / _buckets.Length > 0.7f)
         {
@@ -189,19 +193,21 @@ public class StringDictionary
         
         if (_buckets[hash] == null)
         {
-            _buckets[hash] = new LinkedList();
+            _buckets[hash] = new LinkedList(); // if sth in bucket
         }
 
-        foreach (var pair in _buckets[hash])
+        foreach (var pair in _buckets[hash]) // check whether there are pairs with the same key
         {
-            if (pair.Key == key)
+            if (pair.Key == key) 
             {
                 pair.Value = value;
+                UpdateCache(key, value);
                 return;
             }
         }
 
         _buckets[hash].Add(new KeyValuePair(key, value));
+        UpdateCache(key, value);
         count++;
     }
 
@@ -227,6 +233,7 @@ public class StringDictionary
                         previous.Next = current.Next;
                     }
 
+                    RemoveFromCache(key);
                     count--;
                     return;
                 }
@@ -245,6 +252,11 @@ public class StringDictionary
 
     public string Get(string key)
     {
+        // check cache
+        if (_cache.TryGetValue(key, out string cachedValue))
+        {
+            return cachedValue;
+        }
         int hash = CalculateHash(key);
 
         if (_buckets[hash] != null)
@@ -253,14 +265,30 @@ public class StringDictionary
             {
                 if (pair.Key == key)
                 {
+                    UpdateCache(key, pair.Value);
                     return pair.Value;
                 }
             }
         }
  
-        throw new Exception($"{key} does not exist in the dictionary!");
+        throw new Exception($"{key.ToUpper()} does not exist in the dictionary!");
     }
 
+    public void UpdateCache(string key, string value)
+    {
+        if (_cache.Count >= CacheSize) // the rare will be removed
+        {
+            var lruKey = _cache.OrderBy(kvp => kvp.Value).First().Key;
+            _cache.Remove(lruKey);
+        }
+
+        _cache[key] = value;
+    }
+
+    public void RemoveFromCache(string key)
+    {
+        _cache.Remove(key);
+    }
     public int Count
     {
         get { return count; }
@@ -268,15 +296,15 @@ public class StringDictionary
 
     public int CalculateHash(string key)
     {
-        return key.Length % InitialSize;
+        return key.Length % _buckets.Length;
     }
 
     public void ExtendBuckets()
     {
-        int newSize = _buckets.Length * 2;
+        int newSize = _buckets.Length * 2; // resize 2x
         var newBuckets = new LinkedList[newSize];
 
-        foreach (var list in _buckets)
+        foreach (var list in _buckets) // rehash and copy
         {
             if (list != null)
             {
@@ -295,4 +323,4 @@ public class StringDictionary
         _buckets = newBuckets;
     }
 }
-
+// cache - dict in dict (frequent) -- check cache - to hashtable 
